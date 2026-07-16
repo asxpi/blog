@@ -1,0 +1,21 @@
+services:
+  blog:
+    # Image will be dynamically updated during deployment
+    # Format: registry.example.com/user/blog:sha_tag
+    build: .
+    image: blog:latest
+    container_name: blog
+    restart: unless-stopped
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.blog.rule=Host(`blog.asxp.io`)"
+      - "traefik.http.routers.blog.entrypoints=websecure"
+      - "traefik.http.routers.blog.tls=true"
+      - "traefik.http.routers.blog.tls.certresolver=letsencrypt"
+      - "traefik.http.services.blog.loadbalancer.server.port=80"
+
+networks:
+  traefik:
+    external: true

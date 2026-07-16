@@ -1,0 +1,14 @@
+base_url = "https://blog.asxp.io"
+title = "asxp.io · blog"
+description = "Notes on DevOps and infrastructure engineering by Sergei Poljanski."
+default_language = "en"
+author = "Sergei Poljanski"
+
+compile_sass = false
+build_search_index = false
+generate_feeds = true
+feed_filenames = ["atom.xml"]
+
+[markdown.highlighting]
+enabled = true
+theme = "ayu-dark"

@@ -1,0 +1,21 @@
+name: Test
+
+on:
+  push:
+    branches-ignore:
+      - main
+
+jobs:
+  check:
+    runs-on: nix-latest
+    steps:
+      - name: Prepare container for actions
+        run: |
+          echo "experimental-features = nix-command flakes" >> /etc/nix/nix.conf
+          nix-env -iA nixpkgs.nodejs_22
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build site
+        run: nix develop -c zola build

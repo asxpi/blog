@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <title>{% block title %}{{ config.title }}{% endblock title %}</title>
+        <meta name="description" content="{% block description %}{{ config.description }}{% endblock description %}" />
+        <meta name="author" content="Sergei Poljanski" />
+        <link rel="canonical" href="{{ current_url | default(value=config.base_url) }}" />
+
+        <meta property="og:type" content="{% block og_type %}website{% endblock og_type %}" />
+        <meta property="og:site_name" content="{{ config.title }}" />
+        <meta property="og:title" content="{% block og_title %}{{ config.title }}{% endblock og_title %}" />
+        <meta property="og:url" content="{{ current_url | default(value=config.base_url) }}" />
+        {% block extra_head %}{% endblock extra_head %}
+
+        <link rel="icon" type="image/png" href="/hedgehog.png" sizes="32x32" />
+        <link rel="apple-touch-icon" href="/hedgehog.png" />
+        <link rel="alternate" type="application/atom+xml" title="{{ config.title }}" href="{{ get_url(path='atom.xml') }}" />
+
+        <!-- Fonts are self-hosted; see @font-face in style.css -->
+        <link rel="preload" href="/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="/fonts/ibm-plex-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="stylesheet" href="/style.css" />
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Blog",
+            "@id": "{{ config.base_url | safe }}/#blog",
+            "url": "{{ config.base_url | safe }}",
+            "name": "{{ config.title }}",
+            "description": "{{ config.description }}",
+            "inLanguage": "en",
+            "author": { "@id": "https://asxp.io/#person" },
+            "publisher": { "@id": "https://asxp.io/#organization" }
+        }
+        </script>
+    </head>
+    <body>
+        <main>
+            <header class="site-header">
+                <a class="site-title" href="/">blog.asxp.io</a>
+                <nav>
+                    <a href="https://asxp.io">asxp.io</a>
+                    <a href="{{ get_url(path='atom.xml') }}">feed</a>
+                </nav>
+            </header>
+            {% block content %}{% endblock content %}
+        </main>
+
+        <div class="footer">
+            <div class="footer-line">
+                IE Sergei Poljanski · Tbilisi, Georgia
+            </div>
+        </div>
+    </body>
+</html>
