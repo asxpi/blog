@@ -1,9 +1,10 @@
-# Zola publishes no :latest tag; bump the pin manually (flake.nix tracks nixpkgs separately).
+# Renovate bumps the zola pin; flake.nix (used by the tests) tracks nixpkgs.
 FROM ghcr.io/getzola/zola:v0.23.6 AS build
 
 COPY . /project
 WORKDIR /project
-RUN ["zola", "build"]
+# The image has no zola on PATH since 0.23 (/bin/zola moved to /zola)
+RUN ["/zola", "build"]
 
 FROM nginx:1.28-alpine
 
