@@ -2,5 +2,14 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "local>asxpi/renovate"
+  ],
+  "packageRules": [
+    {
+      "description": "zola must match the flake's (tests, local serve): bump both by hand, and migrate config.toml for 0.23 ([markdown.highlighting] lost `enabled`)",
+      "matchPackageNames": [
+        "ghcr.io/getzola/zola"
+      ],
+      "enabled": false
+    }
   ]
 }
