@@ -6,7 +6,7 @@ COPY . /project
 WORKDIR /project
 RUN ["zola", "build"]
 
-FROM nginx:1.28-alpine
+FROM nginx:1.30-alpine
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /project/public /usr/share/nginx/html
