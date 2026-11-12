@@ -1,10 +1,11 @@
-# Keep in step with the zola in flake.nix (tests, local serve); Renovate
-# leaves this pin alone (renovate.json). 0.23 changes config.toml.
-FROM ghcr.io/getzola/zola:v0.22.1 AS build
+# Keep in step with the zola in flake.nix (tests, local serve): bump this
+# pin together with nixpkgs in flake.lock.
+FROM ghcr.io/getzola/zola:v0.23.6 AS build
 
 COPY . /project
 WORKDIR /project
-RUN ["zola", "build"]
+# zola is /zola in the image since 0.23, not on PATH
+RUN ["/zola", "build"]
 
 FROM nginx:1.30.6-alpine
 

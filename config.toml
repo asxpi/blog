@@ -10,5 +10,4 @@ generate_feeds = true
 feed_filenames = ["atom.xml"]
 
 [markdown.highlighting]
-enabled = true
 theme = "ayu-dark"
