@@ -7,7 +7,7 @@ WORKDIR /project
 # zola is /zola in the image since 0.23, not on PATH
 RUN ["/zola", "build"]
 
-FROM nginx:1.30.6-alpine
+FROM nginx:1.31.8-alpine
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /project/public /usr/share/nginx/html
