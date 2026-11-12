@@ -1,5 +1,5 @@
 # Zola publishes no :latest tag; bump the pin manually (flake.nix tracks nixpkgs separately).
-FROM ghcr.io/getzola/zola:v0.22.1 AS build
+FROM ghcr.io/getzola/zola:v0.23.6 AS build
 
 COPY . /project
 WORKDIR /project
