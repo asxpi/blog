@@ -26,8 +26,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7.0.1
 
-      - name: Build site
-        run: nix develop -c zola build
+      - name: Build site (the package nginx serves)
+        run: nix build .#default
 
   build:
     runs-on: arch-latest
