@@ -1,17 +1,27 @@
 # blog.asxp.io — static blog
 
-Zola static site, built in CI into an nginx container, served behind Traefik on the same prod host as asxp.io. Mirrors the conventions of the sibling `../asxpio` repo (Kaniko build, SSH compose deploy, health-wait); see that repo's CLAUDE.md for the pipeline details.
+Zola static site. `flake.nix` builds it (`packages.default`) and serves it
+(`nixosModules.default`, `services.blog`: an nginx virtual host on :8081)
+on asxpio-services; Traefik on asxpio-ops routes blog.asxp.io there. The
+servers take the site from this flake: a push to `main` is picked up by
+Renovate in asxpi/iac (flake input `blog`) within about 15 minutes and
+deployed by comin, no deploy job here.
+
+The old container pipeline (Kaniko image, compose deploy to `/opt/blog`)
+still runs until it is removed; nothing serves from it.
 
 ## Writing a post
 
-Add `content/<slug>.md` with TOML front matter (`title`, `date`, optional `description`), push to `main`. CI rebuilds and deploys. Local preview: `nix develop -c zola serve` → http://127.0.0.1:1111.
+Add `content/<slug>.md` with TOML front matter (`title`, `date`, optional `description`), push to `main`. It is live within about 15 minutes. Local preview: `nix develop -c zola serve` → http://127.0.0.1:1111.
 
 ## Stack
 
-- **Zola** — version pinned in `Dockerfile` (`ghcr.io/getzola/zola`, no `:latest` tag exists); the `flake.nix` dev shell tracks nixpkgs independently. Bump the Dockerfile pin manually.
-- Multi-stage `Dockerfile`: `zola build` → `nginx:alpine` serving the generated `public/`. nginx config in `nginx.conf` (404 page + short static cache).
-- `docker-compose.yml`: Traefik labels for `blog.asxp.io`, joins only the external `traefik` network — no storage-stack dependency, fully static, no `.env`.
-- Deploy dir on prod: `/opt/blog`. Secrets used (shared with asxpio): `DEPLOY_IP/USER/SSH_KEY`, `FORGEJO_REGISTRY/USER/TOKEN`. Nothing else.
+- **Zola** from the flake's nixpkgs (`flake.lock`); CI builds
+  `nix build .#default`, so a change that breaks the build never reaches
+  `main`. `zola` needs `SSL_CERT_FILE` at build time even though the site
+  fetches nothing (set in the package).
+- nginx settings (404 page, 1-hour cache for css/png/svg/xml/ico) are in
+  the module in `flake.nix`.
 - `templates/` are hand-written Tera (no theme); `static/style.css` reuses the asxp.io dark palette (`#121212` bg, Open Sans + Hack).
 
 ## Rules
