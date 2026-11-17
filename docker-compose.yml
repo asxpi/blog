@@ -5,6 +5,14 @@ services:
     build: .
     image: blog:latest
     container_name: blog
+    # Same as the image HEALTHCHECK. Podman ignores HEALTHCHECK in OCI-format
+    # images (what kaniko pushes), and the deploy waits for "healthy".
+    healthcheck:
+      test: ["CMD-SHELL","wget -qO /dev/null http://127.0.0.1/ || exit 1"]
+      interval: 30s
+      timeout: 5s
+      start_period: 5s
+      retries: 3
     restart: unless-stopped
     networks:
       - traefik
