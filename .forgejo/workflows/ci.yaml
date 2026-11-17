@@ -1,9 +1,11 @@
-name: Test
+name: CI
+
+# Every push builds the site as the servers will (the flake's package).
+# Deploying is not this repository's job: Renovate in asxpi/iac picks up
+# each push to main and the servers pull it (comin).
 
 on:
   push:
-    branches-ignore:
-      - main
 
 jobs:
   check:

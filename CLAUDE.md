@@ -7,8 +7,6 @@ servers take the site from this flake: a push to `main` is picked up by
 Renovate in asxpi/iac (flake input `blog`) within about 15 minutes and
 deployed by comin, no deploy job here.
 
-The old container pipeline (Kaniko image, compose deploy to `/opt/blog`)
-still runs until it is removed; nothing serves from it.
 
 ## Writing a post
 
